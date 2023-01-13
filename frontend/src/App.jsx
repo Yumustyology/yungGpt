@@ -18,18 +18,16 @@ function App() {
   function loader(element) {
     element.textContent = "";
     loadInterval = setInterval(() => {
-    //  console.log(answer.yung && answer.yung.trim().length) 
-     console.log(answer && answer);
-     element.textContent += ".";
+      element.textContent += ".";
       if (element.textContent === "....") {
         element.textContent = "";
-        // }
       }
     }, 300);
   }
 
   function typeText(element, text) {
     let index = 0;
+    element.innerHTML = ''
     let interval = setInterval(() => {
       if (index < text.length) {
         element.innerHTML += text.charAt(index);
@@ -79,37 +77,36 @@ function App() {
     })
       .then((data) => data.json())
       .then((response) => {
-        console.log("22 ff", loadInterval);
         clearInterval(loadInterval);
-        console.log("22 ", loadInterval);
         setAnswer(response);
         setQuestion("");
       })
       .catch((error) => {
-        console.log("theres an error ", error);
-      //   messageDiv.current.innerHTML =
-      //     "Something went nuts 🥜🥜. Please try again.";
-      // });
-      typeText(messageDiv,"Something went nuts 🥜🥜. Please try again.")
-      })
+        console.log("there's an error ", error);
+        const messageDiv = document.getElementById(uniqueId)
+        clearInterval(loadInterval);
+        typeText(messageDiv, "Something went nuts 🥜. Please try again.");
+      });
   };
 
   useEffect(() => {
     const messageDiv = document.getElementById(uniqueId);
-
-    if (answer) {
+    if (answer.yung) {
       clearInterval(loadInterval);
       const parsedData = answer.yung.trim();
+      messageDiv.innerHTML = "";
       typeText(messageDiv, parsedData);
       setAnswer("");
-      return;
-    } else {
-      if (!uniqueId) return;
-      // loader(messageDiv)
-      getAnswers();
-      messageDiv.innerHTML = "";
     }
-  }, [uniqueId, answer]);
+  }, [answer]);
+
+  useEffect(() => {
+    const messageDiv = document.getElementById(uniqueId);
+    if (!uniqueId) return;
+    loader(messageDiv);
+    getAnswers();
+    messageDiv.innerHTML = "";
+  }, [uniqueId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
