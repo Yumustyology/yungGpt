@@ -7,12 +7,14 @@ const app = express()
 
 dotenv.config()
 
-var corsOptions = {
-    origin: 'http://localhost:5173/',
-    optionsSuccessStatus: 200
+var corsOptions ={
+    "origin": "*",
+    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+    "preflightContinue": false,
+    "optionsSuccessStatus": 204
   }
 
-app.use(cors(corsOptions))
+// app.use(cors(corsOptions))
 app.use(express.json())
 
 const configuration = new Configuration({
@@ -37,7 +39,7 @@ const configuration = new Configuration({
         welcome:"welcome to yungGpt API"
     })
   })
-  app.post('/', async(req,res)=>{
+  app.post('/',cors(corsOptions),async(req,res)=>{
     try {
        const question = req.body.question;
        const resp = await  openai.createCompletion({
