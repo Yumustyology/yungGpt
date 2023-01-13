@@ -65,7 +65,7 @@ function App() {
   const getAnswers = async () => {
     if (question.length === 0) return;
 
-    const resp = fetch("http://localhost:5000", {
+    const resp = fetch("https://yunggpt.onrender.com", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
