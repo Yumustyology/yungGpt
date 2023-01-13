@@ -7,7 +7,12 @@ const app = express()
 
 dotenv.config()
 
-app.use(cors())
+var corsOptions = {
+    origin: 'http://localhost:5173/',
+    optionsSuccessStatus: 200
+  }
+
+app.use(cors(corsOptions))
 app.use(express.json())
 
 const configuration = new Configuration({
@@ -23,6 +28,8 @@ const configuration = new Configuration({
 //     res.header('Access-Control-Allow-Origin', '*');
 //     next();
 //   });
+
+
 
 
   app.get('/',(req,res)=>{
