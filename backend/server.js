@@ -18,6 +18,11 @@ const configuration = new Configuration({
   const openai = new OpenAIApi(configuration);
 
 
+  app.get('/',(req,res)=>{
+    res.send({
+        welcome:"welcome to yungGpt API"
+    })
+  })
   app.post('/', async(req,res)=>{
     try {
        const question = req.body.question;
