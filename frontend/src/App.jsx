@@ -18,9 +18,12 @@ function App() {
   function loader(element) {
     element.textContent = "";
     loadInterval = setInterval(() => {
-      element.textContent += ".";
+    //  console.log(answer.yung && answer.yung.trim().length) 
+     console.log(answer && answer);
+     element.textContent += ".";
       if (element.textContent === "....") {
         element.textContent = "";
+        // }
       }
     }, 300);
   }
@@ -33,6 +36,7 @@ function App() {
         index++;
       } else {
         clearInterval(interval);
+        console.log(loadInterval);
       }
     }, 20);
   }
@@ -60,11 +64,9 @@ function App() {
         `;
   };
 
- 
   const getAnswers = async () => {
-   
     if (question.length === 0) return;
-    
+
     const resp = fetch("http://localhost:5000", {
       method: "POST",
       headers: {
@@ -77,15 +79,19 @@ function App() {
     })
       .then((data) => data.json())
       .then((response) => {
+        console.log("22 ff", loadInterval);
         clearInterval(loadInterval);
+        console.log("22 ", loadInterval);
         setAnswer(response);
         setQuestion("");
       })
       .catch((error) => {
         console.log("theres an error ", error);
-        messageDiv.current.innerHTML =
-          "Something went nuts 🥜🥜. Please try again.";
-      });
+      //   messageDiv.current.innerHTML =
+      //     "Something went nuts 🥜🥜. Please try again.";
+      // });
+      typeText(messageDiv,"Something went nuts 🥜🥜. Please try again.")
+      })
   };
 
   useEffect(() => {
@@ -95,19 +101,19 @@ function App() {
       clearInterval(loadInterval);
       const parsedData = answer.yung.trim();
       typeText(messageDiv, parsedData);
-      setAnswer('')
+      setAnswer("");
       return;
+    } else {
+      if (!uniqueId) return;
+      // loader(messageDiv)
+      getAnswers();
+      messageDiv.innerHTML = "";
     }
-
-    if (!uniqueId) return;
-    loader(messageDiv);
-    getAnswers();
-    messageDiv.innerHTML = "";
   }, [uniqueId, answer]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     //user chat section
     chatContainer.current.innerHTML += chatSection(false, question);
     // setQuestion("");

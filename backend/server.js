@@ -33,14 +33,16 @@ const configuration = new Configuration({
         presence_penalty: 0,
       });
       console.log("resp ",resp.data.choices[0].text);
-      
+
       res.status(200).send({
         yung:resp.data.choices[0].text
       })
 
     } catch (error) {
-        console.log("error ",error.message);
+        console.log("error here ",error.message);
         res.status(500).send({error})
+        res.status(400).send({error})
+        throw(error)
     }
   })
 
