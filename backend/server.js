@@ -7,7 +7,7 @@ const app = express()
 
 dotenv.config()
 
-app.use(cors())
+// app.use(cors())
 app.use(express.json())
 
 const configuration = new Configuration({
