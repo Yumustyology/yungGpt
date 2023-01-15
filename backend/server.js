@@ -27,6 +27,7 @@ const configuration = new Configuration({
         welcome:"welcome to yungGpt API"
     })
   })
+  
   app.post('/',async(req,res)=>{
     try {
        const question = req.body.question;
