@@ -9,7 +9,7 @@ dotenv.config()
 
 app.use(cors({
   origin:'http://localhost:5173/',
-  method:['GET', 'POST'],
+  methods:['GET', 'POST'],
 }))
 app.use(express.json())
 
@@ -27,7 +27,7 @@ const configuration = new Configuration({
         welcome:"welcome to yungGpt API"
     })
   })
-  
+
   app.post('/',async(req,res)=>{
     try {
        const question = req.body.question;
