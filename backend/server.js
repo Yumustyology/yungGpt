@@ -7,7 +7,9 @@ const app = express()
 dotenv.config()
 
 
-app.use(cors())
+app.use(cors({
+  origin:'https://yunggpt.onrender.com'
+}))
 app.use(express.json())
 
 const configuration = new Configuration({
