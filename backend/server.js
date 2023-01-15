@@ -8,7 +8,7 @@ dotenv.config();
 
 app.use(
   cors({
-    origin: "https://yung-gpt.netlify.app/",
+    origin: ["https://yung-gpt.netlify.app", "http://localhost:5173"],
     methods: ["GET", "POST"],
   })
 );
