@@ -4,7 +4,9 @@ import send from "./assets/send.svg";
 import botIcon from "./assets/bot.svg";
 import userIcon from "./assets/user.svg";
 import { Configuration, OpenAIApi } from "openai";
+import axios from 'axios'
 
+// https://dribbble.com/OWWStudio
 function App() {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
@@ -27,7 +29,7 @@ function App() {
 
   function typeText(element, text) {
     let index = 0;
-    element.innerHTML = ''
+    element.innerHTML = "";
     let interval = setInterval(() => {
       if (index < text.length) {
         element.innerHTML += text.charAt(index);
@@ -65,16 +67,21 @@ function App() {
   const getAnswers = async () => {
     if (question.length === 0) return;
 
-    const resp = fetch("https://yunggpt.onrender.com", {
-      method: "POST",
-      // mode:'no-cors',
-      // headers: {
-      //   "Content-Type": "application/json",
-      // },
-      body: JSON.stringify({
+    // fetch("https://yunggpt.onrender.com", {
+    //   method: "POST",
+    //   // mode:'no-cors',
+    //   // headers: {
+    //   //   "Content-Type": "application/json",
+    //   // },
+    //   body: JSON.stringify({
+    //     question,
+    //   }),
+    // })
+
+    const resp = axios
+      .post("https://yunggpt.onrender.com", {
         question,
-      }),
-    })
+      })
       .then((data) => data.json())
       .then((response) => {
         clearInterval(loadInterval);
@@ -83,7 +90,7 @@ function App() {
       })
       .catch((error) => {
         console.log("there's an error ", error);
-        const messageDiv = document.getElementById(uniqueId)
+        const messageDiv = document.getElementById(uniqueId);
         clearInterval(loadInterval);
         typeText(messageDiv, "Something went nuts 🥜. Please try again.");
       });

@@ -4,17 +4,10 @@ import cors from 'cors'
 import {Configuration,OpenAIApi} from 'openai'
 
 const app = express()
-
 dotenv.config()
 
-var corsOptions ={
-    "origin": "*",
-    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
-    "preflightContinue": false,
-    "optionsSuccessStatus": 204
-  }
 
-// app.use(cors(corsOptions))
+app.use(cors())
 app.use(express.json())
 
 const configuration = new Configuration({
@@ -26,20 +19,12 @@ const configuration = new Configuration({
 
 
 
-//   app.use((req, res, next) => {
-//     res.header('Access-Control-Allow-Origin', '*');
-//     next();
-//   });
-
-
-
-
   app.get('/',(req,res)=>{
     res.send({
         welcome:"welcome to yungGpt API"
     })
   })
-  app.post('/',cors(corsOptions),async(req,res)=>{
+  app.post('/',async(req,res)=>{
     try {
        const question = req.body.question;
        const resp = await  openai.createCompletion({
@@ -53,8 +38,7 @@ const configuration = new Configuration({
         frequency_penalty: 0.5,
         presence_penalty: 0,
       });
-      console.log("resp ",resp.data.choices[0].text);
-
+  
       res.status(200).send({
         yung:resp.data.choices[0].text
       })
