@@ -8,7 +8,8 @@ dotenv.config()
 
 
 app.use(cors({
-  origin:'https://yunggpt.onrender.com'
+  origin:'http://http://localhost:5173/',
+  method:['GET', 'POST'],
 }))
 app.use(express.json())
 
