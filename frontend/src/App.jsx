@@ -80,7 +80,7 @@ function App() {
 
     const resp = fetch("https://yunggpt.onrender.com", {
       method: "POST",
-      // mode:'no-cors',
+      mode:'no-cors',
       headers: {
         "Content-Type": "application/json",
       },
