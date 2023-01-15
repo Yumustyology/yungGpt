@@ -27,7 +27,7 @@ function App() {
 
   function typeText(element, text) {
     let index = 0;
-    element.innerHTML = ''
+    element.innerHTML = "";
     let interval = setInterval(() => {
       if (index < text.length) {
         element.innerHTML += text.charAt(index);
@@ -62,25 +62,32 @@ function App() {
         `;
   };
 
+  useEffect(() => {
+    fetch("https://yunggpt.onrender.com", {
+      method: "GET",
+    })
+      .then((resp) => resp.json())
+      .then(console.log);
+
+    fetch("http://localhost:5000", {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        question: "hello world",
+      }),
+    })
+      .then((data) => data.json())
+      .then(console.log);
+  }, []);
+
   const getAnswers = async () => {
     if (question.length === 0) return;
-
-
-    // fetch("https://yunggpt.onrender.com", {
-    //   method: "POST",
-    //   // mode:'no-cors',
-    //   // headers: {
-    //   //   "Content-Type": "application/json",
-    //   // },
-    //   body: JSON.stringify({
-    //     question,
-    //   }),
-    // })
-
-
     const resp = fetch("https://yunggpt.onrender.com", {
       method: "POST",
-      mode:'no-cors',
+      mode: "no-cors",
       headers: {
         "Content-Type": "application/json",
       },
@@ -96,7 +103,7 @@ function App() {
       })
       .catch((error) => {
         console.log("there's an error ", error);
-        const messageDiv = document.getElementById(uniqueId)
+        const messageDiv = document.getElementById(uniqueId);
         clearInterval(loadInterval);
         typeText(messageDiv, "Something went nuts 🥜. Please try again.");
       });
