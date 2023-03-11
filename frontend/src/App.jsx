@@ -4,7 +4,7 @@ import send from "./assets/send.svg";
 import botIcon from "./assets/bot.svg";
 import userIcon from "./assets/user.svg";
 import { Configuration, OpenAIApi } from "openai";
-import axios from 'axios';
+import axios from "axios";
 
 // https://dribbble.com/OWWStudio
 function App() {
@@ -36,7 +36,7 @@ function App() {
         index++;
       } else {
         clearInterval(interval);
-        console.log(loadInterval);
+        // console.log(loadInterval);
       }
     }, 20);
   }
@@ -64,106 +64,71 @@ function App() {
         `;
   };
 
-  let apiKey = "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"
+  let apiKey = "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";
 
-  // const configuration = new Configuration({
-  //   apiKey
-  // });
-  
-  // const openai = new OpenAIApi(configuration);
+  const getAnswers = async () => {
+    // console.log(question);
+    if (question.length === 0) return;
+    // console.log('trying to fetch answers');
+    try {
+      const response = await axios.post(
+        "https://api.openai.com/v1/engines/text-davinci-003/completions",
+        {
+          prompt: `${question}`,
+          // max_tokens: 150,
+          temperature: 0.7,
+          n: 1,
+          // stop: "\n",
+          top_p: 1,
+          frequency_penalty: 0.5,
+          presence_penalty: 0,
+          max_tokens: 4000,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${apiKey}`,
+          },
+        }
+      );
 
-  // const getAnswers = async () => {
-  //   if (question.length === 0) return
-    
-  //   try {
-  //     const resp = await openai.createCompletion({
-  //       model: "text-davinci-003",
-  //       prompt: `${question}`,
-  //       temperature: 0.7,
-  //       max_tokens: 4000,
-        // top_p: 1,
-        // frequency_penalty: 0.5,
-        // presence_penalty: 0,
-  //     });
-    
-  //     clearInterval(loadInterval);
-  //     setAnswer(resp.data.choices[0].text);
-  //     setQuestion("");
-  //   } catch (error) {
-  //     console.log(error.response.data);
-  //     console.log("there's an error ", error.message);
-  //     const messageDiv = document.getElementById(uniqueId);
-  //     clearInterval(loadInterval);
-  //     typeText(messageDiv, "Something went nuts 🥜. Please try again.");
-  //   }
-    
-  // };
-
-
-
-const getAnswers = async () => {
-  console.log('gbfbfb on ask question');
-  console.log(question);
-  if (question.length === 0) return;
-  console.log('trying to fetch answers');
-  try {
-
-    const response = await axios.post('https://api.openai.com/v1/engines/text-davinci-003/completions', {
-      prompt: `${question}`,
-      max_tokens: 150,
-      temperature: 0.5,
-      n: 1,
-      stop: "\n",
-      top_p: 1,
-      frequency_penalty: 0.5,
-      presence_penalty: 0
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
-      }
-    });
-
-    clearInterval(loadInterval);
-    console.log(response?.data?.choices[0]?.text);
-    console.log(response);
-    const messageDiv = document.getElementById(uniqueId);
-    clearInterval(loadInterval);
-    const parsedData = response?.data?.choices[0]?.text.trim();
-    messageDiv.innerHTML = "";
-    typeText(messageDiv, parsedData);
-    setAnswer("");
-    setQuestion("");
-  } catch (error) {
-    console.log("there's an error ", error.message);
-    const messageDiv = document.getElementById(uniqueId);
-    clearInterval(loadInterval);
-    typeText(messageDiv, "Something went nuts 🥜. Please try again.");
-  }
-};
-
+      clearInterval(loadInterval);
+      // console.log(response?.data?.choices[0]?.text);
+      // console.log(response);
+      const messageDiv = document.getElementById(uniqueId);
+      clearInterval(loadInterval);
+      const parsedData = response?.data?.choices[0]?.text.trim();
+      messageDiv.innerHTML = "";
+      typeText(messageDiv, parsedData);
+      setAnswer("");
+      setQuestion("");
+    } catch (error) {
+      console.log("there's an error ", error.message);
+      const messageDiv = document.getElementById(uniqueId);
+      clearInterval(loadInterval);
+      typeText(messageDiv, "Something went nuts 🥜. Please try again.");
+    }
+  };
 
   // useEffect(() => {
-    // const messageDiv = document.getElementById(uniqueId);
+  // const messageDiv = document.getElementById(uniqueId);
   //   if (answer != null) {
   //     console.log('yoroshku');
   //     console.log(answer);
   //     clearInterval(loadInterval);
-      // const parsedData = answer.trim();
-      // messageDiv.innerHTML = "";
-      // typeText(messageDiv, parsedData);
-      // setAnswer("");
+  // const parsedData = answer.trim();
+  // messageDiv.innerHTML = "";
+  // typeText(messageDiv, parsedData);
+  // setAnswer("");
   //   }
   // }, [answer]);
 
-
-
   useEffect(() => {
     const messageDiv = document.getElementById(uniqueId);
-    console.log('uniqe id eyy',uniqueId);
-    if (!uniqueId) console.log('the unique id is not set');
+    // console.log('uniqe id eyy',uniqueId);
+    // if (!uniqueId) console.log('the unique id is not set');
     if (!uniqueId) return;
-    console.log('the unique id is set',uniqueId);
+    // console.log('the unique id is set',uniqueId);
     loader(messageDiv);
     getAnswers();
     messageDiv.innerHTML = "";
@@ -173,24 +138,24 @@ const getAnswers = async () => {
     e.preventDefault();
     //user chat section
     chatContainer.current.innerHTML += chatSection(false, question);
-    setQuestion("");
+    // setQuestion("");
     // bot's chatStripe
     const uniqueId = generateUniqueId();
     setUniqueId(uniqueId);
-    console.log(uniqueId);
+    // console.log(uniqueId);
     chatContainer.current.innerHTML += chatSection(true, " ", uniqueId);
     chatContainer.current.scrollTop = chatContainer.current.scrollHeight;
     // getAnswers()
   };
 
-//  useEffect(()=>{
-//   form.current.addEventListener('submit',handleSubmit);
-//   form.current.addEventListener('keyup',e=>{
-//     if(e.keyCode === 13){
-//       handleSubmit(e)
-//     }
-//   });
-//  },[])
+  //  useEffect(()=>{
+  //   form.current.addEventListener('submit',handleSubmit);
+  //   form.current.addEventListener('keyup',e=>{
+  //     if(e.keyCode === 13){
+  //       handleSubmit(e)
+  //     }
+  //   });
+  //  },[])
 
   return (
     <div id="app">
