@@ -64,7 +64,7 @@ function App() {
         `;
   };
 
-  let apiKey = "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";
+  let apiKey = "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";
 
   const getAnswers = async () => {
     // console.log(question);
