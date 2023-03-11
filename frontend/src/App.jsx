@@ -64,7 +64,9 @@ function App() {
         `;
   };
 
-  let apiKey = "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";
+  let apiKey = import.meta.env.VITE_OPEN_AI_API_KEY;
+
+  console.log(apiKey);
 
   const getAnswers = async () => {
     // console.log(question);
